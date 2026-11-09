@@ -65,6 +65,35 @@
 首次发布前需要在 <https://modules.lsposed.org/submission> 提交新包申请，
 由 XposedBot 创建仓库并邀请维护者。
 
+### 模块仓同步（OAuth 限制）
+
+`Xposed-Modules-Repo` 组织启用了 OAuth App 访问限制，`gh release create` / 仓库
+设置 API 会返回 403；Git 内容用 SSH 推送，Release 用已登录 Chrome 的官方网页创建：
+
+```bash
+# 1. 同步 README / SUMMARY 和 tag（SSH）
+git clone git@github.com:Xposed-Modules-Repo/io.github.fengwenhua.quietqqliu.git .local/module-repo
+cp module-README.md .local/module-repo/README.md
+cp module-SUMMARY .local/module-repo/SUMMARY
+git -C .local/module-repo add README.md SUMMARY
+git -C .local/module-repo commit -m 'docs: announce <version>'
+git -C .local/module-repo tag <versionCode>-<versionName>
+git -C .local/module-repo push origin main <versionCode>-<versionName>
+
+# 2. Chrome 打开 Release 编辑页（已登录有 maintain 权限的账号）
+open -a 'Google Chrome' \
+  'https://github.com/Xposed-Modules-Repo/io.github.fengwenhua.quietqqliu/releases/new?tag=<versionCode>-<versionName>&title=<versionName>'
+
+# 3. 网页填写说明、上传 APK + .sha256，然后发布
+python3 scripts/module-browser-upload.py inspect
+python3 scripts/module-browser-upload.py upload
+python3 scripts/module-browser-upload.py publish
+```
+
+仓库简介（About）同样在网页的「Edit repository metadata」里填写，API 无权限。
+脚本会先校验主仓公开 Release 的 APK 与本地 `dist/` 逐字节一致，再上传同一份附件；
+发布后必须从模块仓公开下载地址重新校验 SHA-256。
+
 ## 五、密钥安全
 
 - `keystore.jks` / `keystore.properties` / `local.properties` 都在 `.gitignore` 中；

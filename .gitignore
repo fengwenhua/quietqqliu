@@ -26,6 +26,10 @@ Thumbs.db
 *.log
 captures/
 
+# Python 缓存
+__pycache__/
+*.pyc
+
 # 本地分析文档（按需保存在仓库外）；发布说明随仓库跟踪
 docs/*
 !docs/release-notes/
