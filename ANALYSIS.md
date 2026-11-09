@@ -115,8 +115,7 @@ AD-10 因此挂在「奖励广告回调」层，而不是小说广告取数层�
 
 | 项目 | 关键做法 | 本项目采纳点 |
 |---|---|---|
-| quiethupu | API 102 单入口、Feature/Config/HookState/Report、延迟安装、独立设置 App | 整体骨架直接复用 |
-| quietbox | 开屏/信息流/搜索广告分层；类锚点 + 可选锚点；AB 实验绕过 | 功能分层、可选锚点 fail-open |
+| quietbox | API 102 单入口、Feature/Config/HookState/Report、延迟安装、独立设置 App；开屏/信息流/搜索广告分层、类锚点 + 可选锚点 | 整体骨架与功能分层、可选锚点 fail-open |
 | quietmap | DexKit 动态定位混淆类；锚点表 + 契约测试；多进程回传 | 锚点显式化、诊断页 skip 原因 |
 | tiebaquiet | 展示层卡片过滤、adapter 清扫、FeatureRegistry | 信息流只清广告位、不碰数据模型 |
 | FanqieHook | 阅读器/听书广告 + VIP 闸门；`isVip` 收敛点 + 服务端边界说明 | 「优先拦广告取数，不伪造会员」；明确服务端边界 |

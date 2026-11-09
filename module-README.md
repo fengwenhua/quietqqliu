@@ -41,5 +41,5 @@ QQ浏览器，模块禁用了热重载。
 
 ## 许可证
 
-MIT。工程骨架来自 [Quiethupu](https://github.com/yigenhuobah/quiethupu)（MIT），
+MIT。工程骨架参考 [QuietBox](https://github.com/yigenhuobah/quietbox)（MIT）。
 感谢原作者。

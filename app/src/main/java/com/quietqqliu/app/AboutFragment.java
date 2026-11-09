@@ -17,7 +17,7 @@ public class AboutFragment extends PreferenceFragmentCompat {
 
     private static final String TARGET_PACKAGE = "com.tencent.mtt";
     private static final String SOURCE_URL = "https://github.com/fengwenhua/quietqqliu";
-    private static final String REFERENCE_URL = "https://github.com/yigenhuobah/quiethupu";
+    private static final String REFERENCE_URL = "https://github.com/yigenhuobah/quietbox";
     private static final String LICENSE_URL =
             "https://github.com/fengwenhua/quietqqliu/blob/main/LICENSE";
 

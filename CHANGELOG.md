@@ -45,7 +45,7 @@
 
 ## 0.1.0 - 2026-11-09
 
-首个版本，基于 [Quiethupu](https://github.com/yigenhuobah/quiethupu) 骨架，
+首个版本，参考 [QuietBox](https://github.com/yigenhuobah/quietbox) 骨架，
 适配 QQ浏览器 **20.7.5.5035（versionCode 20750500）**。
 
 - AD-01 开屏广告：AMS 决策器 `splash.v2.ams.a` 的 `w/y/z/v/I/J` 返回 false，

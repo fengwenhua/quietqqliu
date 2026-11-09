@@ -30,7 +30,7 @@
 ## 三、发布步骤
 
 1. 改 `version.properties` 的 `versionName/versionCode`；
-2. 新增 `release-notes/release-notes-<versionName>.md`；
+2. 新增 `docs/release-notes/release-notes-<versionName>.md`；
 3. 更新 `CHANGELOG.md`；
 4. 如果锚点变化，更新 `tools/check-anchors.py` 并跑：
    ```bash

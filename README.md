@@ -7,7 +7,7 @@
 
 面向 QQ浏览器 Android 客户端（`com.tencent.mtt`）的 LSPosed 去广告模块。基于
 [libxposed](https://github.com/libxposed) Modern API 102，纯 Java 实现，独立 APK，
-工程骨架与开关/诊断/回传链路来自 [静弧 Quiethupu](https://github.com/yigenhuobah/quiethupu)。
+工程骨架与开关/诊断/回传链路参考 [静盒 QuietBox](https://github.com/yigenhuobah/quietbox)。
 
 - 适配基线：**QQ浏览器 20.7.5.5035（versionCode 20750500，34 个 Dex）**
 - 作用域：`com.tencent.mtt`（仅主进程安装 hook）
@@ -42,12 +42,11 @@
 
 ## 设计来源：参考项目分析
 
-编写前对 `/Users/panghoo/code/java` 下 12 个模块做了对照，重点是四个同系列项目：
+编写前对 `/Users/panghoo/code/java` 下的参考项目做了对照，重点是 quietbox、quietmap、tiebaquiet：
 
 | 项目 | 目标 | 可复用的经验 |
 |---|---|---|
-| **quiethupu** | 虎扑 | libxposed 102 单入口、Feature/Config/HookState/Report 体系、延迟安装、设置/诊断 App。本项目直接以其为骨架 |
-| **quietbox** | 小红书 | 开屏/信息流/搜索广告分层拆解；类级锚点与可选锚点分离；AB 实验绕过 |
+| **quietbox** | 小红书 | libxposed 102 单入口、Feature/Config/HookState/Report 体系、延迟安装、设置/诊断 App；开屏/信息流/搜索广告分层、类级锚点与可选锚点分离。本项目以其骨架为参考 |
 | **quietmap** | 高德地图 | DexKit 动态定位混淆类；锚点表 + 契约测试；多进程诊断回传 |
 | **tiebaquiet** | 百度贴吧 | 展示层卡片过滤（不强改数据模型）、按 adapter 清扫、FeatureRegistry 注册表 |
 
@@ -187,5 +186,5 @@ AD-11 的 `network.NetworkModule#fetch` 是 Hippy 框架层类，同样不受 JS
 
 ## 许可证
 
-MIT。工程骨架来自 [Quiethupu](https://github.com/yigenhuobah/quiethupu)（MIT）；
+MIT。工程骨架参考 [QuietBox](https://github.com/yigenhuobah/quietbox)（MIT）；
 参考项目的思路仅用于学习，未复制其业务代码。

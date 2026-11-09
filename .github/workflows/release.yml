@@ -69,8 +69,8 @@ jobs:
             echo "tag $RELEASE_TAG does not match v$VERSION" >&2
             exit 1
           fi
-          test -f "release-notes/release-notes-$VERSION.md" || {
-            echo "missing release-notes/release-notes-$VERSION.md" >&2
+          test -f "docs/release-notes/release-notes-$VERSION.md" || {
+            echo "missing docs/release-notes/release-notes-$VERSION.md" >&2
             exit 1
           }
 
@@ -131,7 +131,7 @@ jobs:
           gh release create "$RELEASE_TAG" dist/* \
             --repo "$GITHUB_REPOSITORY" \
             --title "$VERSION" \
-            --notes-file "release-notes/release-notes-$VERSION.md"
+            --notes-file "docs/release-notes/release-notes-$VERSION.md"
 
       - name: Sync to Xposed-Modules-Repo (when a scoped token is configured)
         if: github.event_name == 'push' || inputs.publish_release
@@ -150,4 +150,4 @@ jobs:
             dist/"quietqqliu-$VERSION.apk.sha256" \
             --repo Xposed-Modules-Repo/io.github.fengwenhua.quietqqliu \
             --title "$VERSION" \
-            --notes-file "release-notes/release-notes-$VERSION.md"
+            --notes-file "docs/release-notes/release-notes-$VERSION.md"
