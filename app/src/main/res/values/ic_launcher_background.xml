@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 渐变背景的纯色兜底（部分旧启动器/主题只读颜色时使用）。 -->
+    <color name="ic_launcher_background">#FF0A1B33</color>
+</resources>

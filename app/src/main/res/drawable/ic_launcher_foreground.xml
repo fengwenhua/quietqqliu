@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  QuietQQliu 自适应图标前景：白色 Q 环形（浏览器），尾巴收笔，内部绿色对勾
+  （静净/无广告）。全部落在 108x108 的 72x72 安全区内。
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Q 的圆环 -->
+    <path
+        android:fillColor="@android:color/transparent"
+        android:pathData="M54,30 A24,24 0 1,0 54,78 A24,24 0 1,0 54,30 Z"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeLineCap="round"
+        android:strokeWidth="7.5" />
+    <!-- Q 的尾巴 -->
+    <path
+        android:fillColor="@android:color/transparent"
+        android:pathData="M70,70 L83,83"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeLineCap="round"
+        android:strokeWidth="7.5" />
+    <!-- 静净：绿色对勾 -->
+    <path
+        android:fillColor="@android:color/transparent"
+        android:pathData="M43,54 L51,62 L66,44"
+        android:strokeColor="#FF3DDC97"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:strokeWidth="6.5" />
+</vector>
