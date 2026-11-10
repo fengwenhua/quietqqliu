@@ -1,5 +1,16 @@
 # 更新日志
 
+## 0.2.3 - 2026-11-10
+
+- AD-13 热启动全屏倒计时广告 / 右下角悬浮挂件：
+  - 跳过 `CommonMaskService` 的初始化、Splash 结束回调、mask 请求、回包与展示；
+  - 跳过 `nativead.utils.q.o` 的「关闭后缩成挂件」通知；
+  - 首页挂件入口 `homepage.pendant.global.view.b#e` 只拦截
+    `COUNT_DOWN_PENDANT` / 商业化倒计时，其他挂件放行；
+  - 断开 `AdMaskService.requestMaskAdAndShow` / `isMaskCountDownAd` 作为信息流兜底。
+- 设置页新增「热启动全屏/悬浮广告」开关（`ad_mask_pendant`，默认开启）。
+- 锚点检查器更新为 107 条。
+
 ## 0.2.2 - 2026-11-09
 
 - 更换应用图标：QQ 蓝渐变背景 + 白色 Q 环形 + 绿色对勾（静净/无广告），

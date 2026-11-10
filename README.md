@@ -31,6 +31,7 @@
 | AD-10 | `ad_download_unlock` | 下载看广告解锁 | `RewardDialogServiceImpl#preloadRewardAd/showRewardDialog`、`BusinessAdServiceImp#showAmsRewardVideoAD/setAmsRewardVideoAD` |
 | AD-11 | `ad_hippy` | Hippy 页面广告 | `QBBusinessADModule#fetchAd/fetchAdFormatJSON/getAdCache/getPreFetchAd/preloadAdIn*`、`network.NetworkModule#fetch`（getAds 三地址） |
 | AD-12 | `ad_vip` | 模拟悦读卡（免广告/直下） | `QBWupModule#pbSend` 的 `PrivilegeCenter/CheckUserStatus` 返回 OPENED/99 年 |
+| AD-13 | `ad_mask_pendant` | 热启动全屏/悬浮广告 | `CommonMaskService` 请求/展示、`nativead.utils.q#o` 挂件通知、`PendantView#e` 倒计时挂件、`AdMaskService` |
 | UI-01 | `ui_update_dialog` | 更新弹窗 | `UpgradeDialogActivity#launch`、`UpgradeActiveActivity#onCreate`、`UpgradeService#canShowRedDot` |
 | PV-01 | `pv_clipboard_ad` | 剪贴板口令（默认关） | `ClipboardTokenHandler#handle`、`PasscodeClipboardConsumer#consume` |
 
@@ -151,6 +152,25 @@ AD-11 另外拦截 `network.NetworkModule#fetch` 中广告取数路径
 （路径关键字 `getads` / `getgrayads`，忽略大小写，覆盖当前
 `kde.qq.com/getAds`、`kde.qq.com/getGrayAds`、`testreport.nfa.qq.com/getAds`），
 在悦读卡状态尚未加载或某个广告位绕过 `isAdlessAsync()` 时兜底。
+
+## 热启动全屏/悬浮广告（AD-13）
+
+热启动后出现的全屏倒计时广告，关闭/倒计时结束后会缩到右下角变成带倒计时的悬浮挂件。
+链路是：
+
+```
+CommonMaskService.onSplashHasEnd
+  → z()/w() 请求 mask 广告
+  → D() 创建 CommonMaskFullScreenDialog
+  → o0() 展示 CountDownMaskLayout
+  → dismiss() → nativead.utils.q.o() 通知显示首页倒计时挂件
+  → PendantView#e(task, position)
+```
+
+AD-13 跳过 `CommonMaskService` 的初始化、Splash 结束回调、请求、回包与展示；
+跳过 `nativead.utils.q#o` 的挂件通知；首页挂件入口 `b#e` 只拦截
+`COUNT_DOWN_PENDANT` 与商业化倒计时，其他挂件（下载/文本/游戏等）放行；
+另外断开 `AdMaskService` 的信息流 mask 入口作为兜底。
 
 ### 没有改 JS，也不会被 JS 热更新冲掉
 

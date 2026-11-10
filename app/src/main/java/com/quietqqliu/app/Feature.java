@@ -75,6 +75,11 @@ public enum Feature {
             R.string.f_ad_vip_title, R.string.f_ad_vip_summary,
             true, Group.AD, null),
 
+    /** AD-13 热启动全屏倒计时广告 / 右下角悬浮挂件：CommonMaskService + 倒计时挂件入口。 */
+    MASK_PENDANT_AD_BLOCK("AD-13", "ad_mask_pendant",
+            R.string.f_ad_mask_pendant_title, R.string.f_ad_mask_pendant_summary,
+            true, Group.AD, null),
+
     /** UI-01 更新弹窗。 */
     UPDATE_DIALOG_BLOCK("UI-01", "ui_update_dialog",
             R.string.f_ui_update_dialog_title, R.string.f_ui_update_dialog_summary,

@@ -69,6 +69,10 @@
             android:icon="@drawable/ic_group_ad"
             android:key="ad_vip" />
 
+        <com.quietqqliu.app.MaterialSwitchPreference
+            android:icon="@drawable/ic_group_ad"
+            android:key="ad_mask_pendant" />
+
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/group_ui">

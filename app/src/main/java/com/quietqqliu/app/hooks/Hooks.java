@@ -60,6 +60,8 @@ public final class Hooks {
                 (module, cl, config, f) -> HippyAdHooks.install(module, cl));
         map.put(Feature.HIPPY_VIP_UNLOCK,
                 (module, cl, config, f) -> HippyVipHooks.install(module, cl));
+        map.put(Feature.MASK_PENDANT_AD_BLOCK,
+                (module, cl, config, f) -> MaskPendantAdHooks.install(module, cl));
         map.put(Feature.UPDATE_DIALOG_BLOCK,
                 (module, cl, config, f) -> UpdateDialogHooks.install(module, cl));
         map.put(Feature.CLIPBOARD_AD_BLOCK,
