@@ -44,8 +44,8 @@
 6. 提交并推送 `main`；
 7. 打 tag 并推送，自动触发 release：
    ```bash
-   git tag v0.2.2
-   git push origin main v0.2.2
+   git tag v0.2.5
+   git push origin main v0.2.5
    ```
 8. 在 Actions 里确认 build/sign/publish 全部成功；
 9. 下载 Release APK，核对 SHA-256 与 `release-trust.properties` 的证书；
@@ -57,7 +57,7 @@
 - 仓库：`Xposed-Modules-Repo/io.github.fengwenhua.quietqqliu`
 - 首页：`module-README.md` 同步为模块仓 `README.md`
 - 简介：`module-SUMMARY` 同步为模块仓 `SUMMARY`
-- release tag：`{versionCode}-{versionName}`，例如 `4-0.2.2`
+- release tag：`{versionCode}-{versionName}`，例如 `7-0.2.5`
 - release 标题：`{versionName}`，正文使用同一份 release notes
 - 附件：`quietqqliu-{versionName}.apk`、`quietqqliu-{versionName}.apk.sha256`
 

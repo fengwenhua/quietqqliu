@@ -94,7 +94,7 @@ release 需要 `keystore.properties`（`storeFile/storePassword/keyAlias/keyPass
 
 ## 升级校验 / 文档
 
-QQ浏览器升级后，先跑锚点校验（类名 + 方法名 + 参数个数，95 条）：
+QQ浏览器升级后，先跑锚点校验（类名 + 方法名 + 参数个数，109 条）：
 
 ```bash
 python3 tools/check-anchors.py /path/to/base.apk
@@ -173,6 +173,21 @@ AD-13 跳过 `CommonMaskService` 的初始化、Splash 结束回调、请求、�
 跳过 `nativead.utils.q#o` 的挂件通知；首页挂件入口 `b#e` 只拦截
 `COUNT_DOWN_PENDANT` 与商业化倒计时，其他挂件（下载/文本/游戏等）放行；
 另外断开 `AdMaskService` 的信息流 mask 入口作为兜底。
+
+## 小说「我的」页轮播位（AD-14）
+
+小说频道「我的」页的轮播卡片是 Hippy 的 Banner 组件，不是原生
+`BannerPageAdapter`。AD-14 会：
+
+1. 从预加载 JSON 中删除 `BANNER` 卡片；
+2. 按 `HippyHorizontalScrollView` 的尺寸/父卡片结构识别卡片；
+3. 调用 `Hippy.dom.b#W(nodeId, width, 0)` 把 FlexNode 高度置 0，触发 Yoga
+   重新布局，后面的「我的小说」自动上移，不留下空白；
+4. 隐藏原生 View 作为兜底。
+
+只对卡片做 `View.GONE`/`removeView` 不够：Hippy 的 FlexNode 尺寸不变，页面仍会
+保留卡片高度。这个问题和 AD-13 的超时挂件一样，都是“原生 View + JS 布局树”
+两套状态导致的。
 
 ### 没有改 JS，也不会被 JS 热更新冲掉
 
