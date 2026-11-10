@@ -80,6 +80,11 @@ public enum Feature {
             R.string.f_ad_mask_pendant_title, R.string.f_ad_mask_pendant_summary,
             true, Group.AD, null),
 
+    /** AD-14 小说频道「我的」页轮播位：整张卡片隐藏（含广告/运营/VIP）。 */
+    MINE_CAROUSEL_BLOCK("AD-14", "ad_mine_carousel",
+            R.string.f_ad_mine_carousel_title, R.string.f_ad_mine_carousel_summary,
+            true, Group.AD, null),
+
     /** UI-01 更新弹窗。 */
     UPDATE_DIALOG_BLOCK("UI-01", "ui_update_dialog",
             R.string.f_ui_update_dialog_title, R.string.f_ui_update_dialog_summary,

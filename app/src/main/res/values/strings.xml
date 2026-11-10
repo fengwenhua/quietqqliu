@@ -81,6 +81,8 @@
     <string name="f_ad_hippy_summary">拦截小说阅读页、推荐、短剧等 Hippy 页面的广告取数与 getAds 请求（含底部/插页广告）</string>
     <string name="f_ad_vip_title">模拟悦读卡（免广告）</string>
     <string name="f_ad_vip_summary">本地模拟悦读卡已开通 99 年：阅读页不再取广告，点下载直接开始（不解锁付费章节）</string>
+    <string name="f_ad_mine_carousel_title">我的页轮播位</string>
+    <string name="f_ad_mine_carousel_summary">隐藏小说频道「我的」页的整张轮播卡片（含广告、运营和 VIP 卡）</string>
     <string name="f_ad_mask_pendant_title">热启动全屏/悬浮广告</string>
     <string name="f_ad_mask_pendant_summary">拦截热启动后的全屏倒计时广告，以及倒计时结束缩到右下角的悬浮挂件</string>
 

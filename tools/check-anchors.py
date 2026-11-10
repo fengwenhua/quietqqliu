@@ -255,6 +255,12 @@ ANCHORS = [
      'isMaskCountDownAd', 1, 'AD-13 信息流 mask 识别', False),
     ('com.tencent.mtt.browser.homepage.pendant.global.view.b',
      'e', 2, 'AD-13 首页挂件展示入口', True),
+    # AD-14 我的页轮播位
+    ('com.tencent.mtt.hippy.views.scroll.HippyHorizontalScrollView',
+     'onLayout', 5, 'AD-14 横向轮播卡片布局', True),
+    ('com.tencent.mtt.hippy.dom.b',
+     'W', 3, 'AD-14 Hippy FlexNode 高度置 0', True),
+
     # UI-01 更新弹窗
     ('com.tencent.upgrade.ui.UpgradeDialogActivity', 'launch', 2, 'UI-01 升级对话框', True),
     ('com.tencent.upgrade.ui.UpgradeActiveActivity', 'onCreate', 1, 'UI-01 升级页', True),

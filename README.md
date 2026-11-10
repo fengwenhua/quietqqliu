@@ -32,6 +32,7 @@
 | AD-11 | `ad_hippy` | Hippy 页面广告 | `QBBusinessADModule#fetchAd/fetchAdFormatJSON/getAdCache/getPreFetchAd/preloadAdIn*`、`network.NetworkModule#fetch`（getAds/batch_get_ads） |
 | AD-12 | `ad_vip` | 模拟悦读卡（免广告/直下） | `QBWupModule#pbSend` 的 `PrivilegeCenter/CheckUserStatus` 返回 OPENED/99 年 |
 | AD-13 | `ad_mask_pendant` | 热启动全屏/悬浮广告 | `CommonMaskService` 请求/展示、`nativead.utils.q#o` 挂件通知、`PendantView#e` 倒计时挂件、`AdMaskService` |
+| AD-14 | `ad_mine_carousel` | 我的页轮播位 | `HippyHorizontalScrollView#onLayout` 识别 + `Hippy.dom.b#W` 将 FlexNode 高度置 0；预加载数据过滤 BANNER |
 | UI-01 | `ui_update_dialog` | 更新弹窗 | `UpgradeDialogActivity#launch`、`UpgradeActiveActivity#onCreate`、`UpgradeService#canShowRedDot` |
 | PV-01 | `pv_clipboard_ad` | 剪贴板口令（默认关） | `ClipboardTokenHandler#handle`、`PasscodeClipboardConsumer#consume` |
 

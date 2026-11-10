@@ -71,6 +71,10 @@
 
         <com.quietqqliu.app.MaterialSwitchPreference
             android:icon="@drawable/ic_group_ad"
+            android:key="ad_mine_carousel" />
+
+        <com.quietqqliu.app.MaterialSwitchPreference
+            android:icon="@drawable/ic_group_ad"
             android:key="ad_mask_pendant" />
 
     </PreferenceCategory>
