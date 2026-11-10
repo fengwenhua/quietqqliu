@@ -25,6 +25,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 PREFIX = "https://github.com/Xposed-Modules-Repo/io.github.fengwenhua.quietqqliu/releases/"
+EXPECTED_TAG = ""
 
 
 def version():
@@ -37,12 +38,15 @@ def browser(javascript):
 repeat with w in windows
 repeat with t in tabs of w
 if URL of t starts with PREFIX then
+set tagValue to execute t javascript "document.getElementById('release_tag_name')?.value || ''"
+if tagValue is EXPECTED then
 return execute t javascript EXPR
+end if
 end if
 end repeat
 end repeat
 return "MODULE_TAB_MISSING"
-end tell'''.replace("PREFIX", json.dumps(PREFIX)).replace("EXPR", json.dumps(javascript))
+end tell'''.replace("PREFIX", json.dumps(PREFIX)).replace("EXPECTED", json.dumps(EXPECTED_TAG)).replace("EXPR", json.dumps(javascript))
     result = subprocess.run(["osascript", "-"], input=script, capture_output=True, text=True, timeout=30)
     if result.returncode:
         raise RuntimeError("Chrome automation unavailable: " + result.stderr[:300])
@@ -105,8 +109,10 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("action", choices=("inspect", "upload", "publish"))
     args = parser.parse_args()
+    global EXPECTED_TAG
     stamp = version()
     tag = stamp["versionCode"] + "-" + stamp["versionName"]
+    EXPECTED_TAG = tag
     files = files_for(stamp)
     notes = (ROOT / "docs" / "release-notes" / ("release-notes-" + stamp["versionName"] + ".md")).read_text()
     current = state()
