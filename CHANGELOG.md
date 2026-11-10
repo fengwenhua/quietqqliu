@@ -1,5 +1,13 @@
 # 更新日志
 
+## 0.2.4 - 2026-11-10
+
+- 修复小说频道「我的」页轮播广告：该广告走
+  `trpc.nfa.proxy_svr.ProxySvrWup/BatchGetAds` / `kde.qq.com/batch_get_ads`，
+  此前 `getAds` 拦截覆盖不到。AD-11 现在同时拦截 `batch_get_ads` 网络请求，
+  并在 `QBWupModule#pbSend/send` 上对 `BatchGetAds` 返回空广告列表。
+  轮播里的普通运营/VIP 卡片不受影响。
+
 ## 0.2.3 - 2026-11-10
 
 - AD-13 热启动全屏倒计时广告 / 右下角悬浮挂件：

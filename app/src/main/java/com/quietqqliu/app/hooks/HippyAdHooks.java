@@ -1,9 +1,13 @@
 package com.quietqqliu.app.hooks;
 
 import com.quietqqliu.app.Feature;
+import android.util.Base64;
+
 import com.quietqqliu.app.HookState;
 
 import java.lang.reflect.Method;
+import java.nio.charset.StandardCharsets;
+import java.util.Locale;
 import java.util.Set;
 
 import io.github.libxposed.api.XposedModule;
@@ -30,6 +34,10 @@ final class HippyAdHooks {
             "com.tencent.mtt.browser.appstoreguide.hippy.QBBusinessADModule";
     private static final String NETWORK_MODULE =
             "com.tencent.mtt.hippy.modules.nativemodules.network.NetworkModule";
+    private static final String WUP_MODULE =
+            "com.tencent.mtt.hippy.qb.modules.QBWupModule";
+    private static final String HIPPY_MAP = "com.tencent.mtt.hippy.common.HippyMap";
+    private static final String PROMISE = "com.tencent.mtt.hippy.modules.Promise";
 
     /**
      * Hippy 端广告取数路径。当前版本是
@@ -37,7 +45,7 @@ final class HippyAdHooks {
      * {@code testreport.nfa.qq.com/getAds}；按路径关键字匹配（忽略大小写），
      * 这样广告域名被换成其它 CDN 时仍然能拦住。
      */
-    private static final String[] AD_PATH_KEYS = {"getads", "getgrayads"};
+    private static final String[] AD_PATH_KEYS = {"getads", "getgrayads", "batch_get_ads"};
 
     private HippyAdHooks() {
     }
@@ -62,7 +70,8 @@ final class HippyAdHooks {
                 reject(module, f, cls, "openPureAd", 2, "QBBusinessADModule#openPureAd");
             }
             blockAdFetch(module, f, cl);
-            HookState.note(f, "Hippy 广告：QBBusinessADModule 取数 + getAds 网络请求全部拦截");
+            blockBatchGetAdsWup(module, f, cl);
+            HookState.note(f, "Hippy 广告：QBBusinessADModule 取数 + getAds/batch_get_ads 拦截");
         } catch (Throwable t) {
             HookKit.error(module, f.id + " install aborted", t);
             HookState.note(f, "安装异常");
@@ -112,6 +121,95 @@ final class HippyAdHooks {
             }
         }
         return "?";
+    }
+
+    /**
+     * 小说频道「我的」页的轮播广告走 WUP：
+     * {@code trpc.nfa.proxy_svr.ProxySvrWup/BatchGetAds}，
+     * JS 通过 {@code QBWupModule.pbSend} 取数，返回结构是
+     * {@code {ads:[...]}}。这里在原生 WUP 桥上直接返回空 ads，
+     * JS 的 {@code gl()} 会得到空数组，轮播只保留普通运营卡。
+     */
+    private static void blockBatchGetAdsWup(XposedModule module, Feature f, ClassLoader cl) {
+        Class<?> cls = HookKit.findClassOptional(module, f, cl, WUP_MODULE);
+        if (cls == null) {
+            return;
+        }
+        try {
+            Class<?> mapClass = cl.loadClass(HIPPY_MAP);
+            Class<?> promiseClass = cl.loadClass(PROMISE);
+            Method getString = mapClass.getMethod("getString", String.class);
+            Method pushObject = mapClass.getMethod("pushObject", String.class, Object.class);
+            Method resolve = promiseClass.getMethod("resolve", Object.class);
+            Method pbSend = HookKit.findByNameAndArity(module, f, cls, "pbsend", 2);
+            Method send = HookKit.findByNameAndArity(module, f, cls, "send", 2);
+            if (pbSend != null) {
+                installWupBlock(module, f, "QBWupModule#pbSend(BatchGetAds)", pbSend,
+                        mapClass, getString, pushObject, resolve);
+            }
+            if (send != null) {
+                installWupBlock(module, f, "QBWupModule#send(BatchGetAds)", send,
+                        mapClass, getString, pushObject, resolve);
+            }
+        } catch (Throwable t) {
+            HookKit.error(module, f.id + " install batch_get_ads failed", t);
+        }
+    }
+
+    private static void installWupBlock(XposedModule module, Feature f, String label,
+                                        Method method, Class<?> mapClass, Method getString,
+                                        Method pushObject, Method resolve) {
+        HookKit.install(module, f, label, method, chain -> {
+            try {
+                Object req = chain.getArg(0);
+                String service = asString(invoke(getString, req, "serviceName"));
+                String func = asString(invoke(getString, req, "funcName"));
+                if (!isBatchGetAds(service, func)) {
+                    return chain.proceed();
+                }
+                String json = "{\"ads\":[]}";
+                String encode = asString(invoke(getString, req, "encode"));
+                Object body;
+                if ("utf8".equalsIgnoreCase(encode)) {
+                    body = json;
+                } else if ("none".equalsIgnoreCase(encode)) {
+                    body = json.getBytes(StandardCharsets.UTF_8);
+                } else {
+                    body = Base64.encodeToString(json.getBytes(StandardCharsets.UTF_8),
+                            Base64.NO_WRAP);
+                }
+                Object response = mapClass.getConstructor().newInstance();
+                pushObject.invoke(response, "code", 0);
+                pushObject.invoke(response, "funcode", 0);
+                pushObject.invoke(response, "errmsg", "");
+                pushObject.invoke(response, "body", body);
+                resolve.invoke(chain.getArg(1), response);
+                HookKit.hit(module, f, "BatchGetAds 返回空广告列表");
+                return null;
+            } catch (Throwable t) {
+                HookKit.error(module, f.id + " intercept error BatchGetAds", t);
+                return chain.proceed();
+            }
+        });
+    }
+
+    private static boolean isBatchGetAds(String service, String func) {
+        String all = ((service == null ? "" : service) + " "
+                + (func == null ? "" : func)).toLowerCase(Locale.ROOT);
+        return all.contains("batchgetads")
+                || (all.contains("proxy_svr") && all.contains("getads"));
+    }
+
+    private static String asString(Object value) {
+        return value instanceof String ? (String) value : "";
+    }
+
+    private static Object invoke(Method method, Object target, Object arg) {
+        try {
+            return method.invoke(target, arg);
+        } catch (Throwable t) {
+            return null;
+        }
     }
 
     /** Hippy 的 fetch 参数把 URL 放在 "url"；兜底扫描所有字符串值。 */

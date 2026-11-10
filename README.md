@@ -29,7 +29,7 @@
 | AD-08 | `ad_shake` | 摇一摇/扭转跳转 | `ShakeManagerService#register/setShakeListener`、Hippy `registerShake/registerTwist` |
 | AD-09 | `ad_popup` | 弹窗/插屏广告 | `H5AdManager#b`、`FeedsAdFreeDialog#p` |
 | AD-10 | `ad_download_unlock` | 下载看广告解锁 | `RewardDialogServiceImpl#preloadRewardAd/showRewardDialog`、`BusinessAdServiceImp#showAmsRewardVideoAD/setAmsRewardVideoAD` |
-| AD-11 | `ad_hippy` | Hippy 页面广告 | `QBBusinessADModule#fetchAd/fetchAdFormatJSON/getAdCache/getPreFetchAd/preloadAdIn*`、`network.NetworkModule#fetch`（getAds 三地址） |
+| AD-11 | `ad_hippy` | Hippy 页面广告 | `QBBusinessADModule#fetchAd/fetchAdFormatJSON/getAdCache/getPreFetchAd/preloadAdIn*`、`network.NetworkModule#fetch`（getAds/batch_get_ads） |
 | AD-12 | `ad_vip` | 模拟悦读卡（免广告/直下） | `QBWupModule#pbSend` 的 `PrivilegeCenter/CheckUserStatus` 返回 OPENED/99 年 |
 | AD-13 | `ad_mask_pendant` | 热启动全屏/悬浮广告 | `CommonMaskService` 请求/展示、`nativead.utils.q#o` 挂件通知、`PendantView#e` 倒计时挂件、`AdMaskService` |
 | UI-01 | `ui_update_dialog` | 更新弹窗 | `UpgradeDialogActivity#launch`、`UpgradeActiveActivity#onCreate`、`UpgradeService#canShowRedDot` |
@@ -149,9 +149,10 @@ AD-12 在原生 `QBWupModule#pbsend(HippyMap, Promise)` 上按 `serviceName/func
 不解锁付费章节，也不会生成订单。
 
 AD-11 另外拦截 `network.NetworkModule#fetch` 中广告取数路径
-（路径关键字 `getads` / `getgrayads`，忽略大小写，覆盖当前
-`kde.qq.com/getAds`、`kde.qq.com/getGrayAds`、`testreport.nfa.qq.com/getAds`），
-在悦读卡状态尚未加载或某个广告位绕过 `isAdlessAsync()` 时兜底。
+（路径关键字 `getads` / `getgrayads` / `batch_get_ads`，忽略大小写，覆盖当前
+`kde.qq.com/getAds`、`kde.qq.com/getGrayAds`、`kde.qq.com/batch_get_ads` 等），
+在悦读卡状态尚未加载或某个广告位绕过 `isAdlessAsync()` 时兜底。`QBWupModule`
+的 `BatchGetAds` 也会返回空 `ads`，用于小说频道「我的」页的轮播广告。
 
 ## 热启动全屏/悬浮广告（AD-13）
 
